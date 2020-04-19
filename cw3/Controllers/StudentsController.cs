@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using cw3.DAL;
 using cw3.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace cw3.Controllers
 {
@@ -18,10 +20,11 @@ namespace cw3.Controllers
         {
             _dbService = dbService;
         }
-        [HttpGet]
-        public IActionResult GetStudents(string orderby)
+        [HttpGet("{id}")]
+        public IActionResult GetStudents(int id)
         {
-            return Ok(_dbService.GetStudents());
+   
+            return Ok(_dbService.GetStudents(id.ToString()));
         }
  
         [HttpGet("{id}")]
