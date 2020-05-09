@@ -7,6 +7,7 @@ using cw3.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
+using cw3.Services;
 
 namespace cw3.Controllers
 {
@@ -14,17 +15,17 @@ namespace cw3.Controllers
     [Route("api/students")]
     public class StudentsController : ControllerBase
     {
-        private readonly IDbService _dbService;
+        private readonly IStudentDbService _dbService;
 
-        public StudentsController(IDbService dbService)
+        public StudentsController(IStudentDbService dbService)
         {
             _dbService = dbService;
         }
-        [HttpGet("{id}")]
-        public IActionResult GetStudents(int id)
+        [HttpGet]
+        public IActionResult GetStudents(string orderBy)
         {
    
-            return Ok(_dbService.GetStudents(id.ToString()));
+            return Ok();
         }
  
         [HttpGet("{id}")]

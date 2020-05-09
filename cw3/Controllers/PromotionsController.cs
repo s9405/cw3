@@ -2,35 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using cw3.Requests;
+using cw3.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using cw3.Services;
-using cw3.Requests;
-using cw3.Responses;
 
 namespace cw3.Controllers
 {
-    [Route("api/enrollments")]
+    [Route("api/enrollments/promotions")]
     [ApiController]
-    public class EnrollmentsController : ControllerBase
+    public class PromotionsController : ControllerBase
     {
         private IStudentDbService _service;
-
-        public EnrollmentsController(IStudentDbService dbService)
+        public PromotionsController(IStudentDbService service)
         {
-            _service = dbService;
+            _service = service;
         }
-
         [HttpPost]
-        public IActionResult Enroll(EnrollStudentRequest student)
+        public IActionResult PromoteStudent(PromoteStudentRequest promotion)
         {
-            var response = _service.EnrollStudent(student);
+            var response = _service.PromoteStudent(promotion);
             if (response != null)
             {
                 return Ok(response);
             }
             return BadRequest();
         }
-      
     }
 }

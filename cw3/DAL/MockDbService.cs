@@ -13,12 +13,8 @@ namespace cw3.DAL
 
         static MockDbService()
         {
-            _students = new List<Student>
-            {
-                new Student{IdStudent=1, FirstName="Jan", LastName="Kowalski" },
-                new Student{IdStudent=2, FirstName="Anna", LastName="Malewski" },
-                new Student{IdStudent=1, FirstName="Andrzej", LastName="Andrzejewicz" }
-            };
+            _students = new List<Student>();
+
 
         }
 
@@ -43,8 +39,10 @@ namespace cw3.DAL
                     st.FirstName = dr["FirstName"].ToString();
                     st.LastName = dr["LastName"].ToString();
                     st.IndexNumber = dr["IndexNumber"].ToString();
-                    st.BirthDate = dr["BirthDate"].ToString();
-                    st.IdEnrollment = dr["IdEnrollment"].ToString();
+                    st.BirthDate = (DateTime)dr["BirthDate"];
+                    st.Semester = dr["semester"].ToString();
+                    st.StudiesName = dr["name"].ToString();
+                    // st.IdEnrollment = dr["IdEnrollment"].ToString();
                     tmp.Add(st);
                     
 
