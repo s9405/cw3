@@ -2,6 +2,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using cw3.DAL;
+using cw3.Middlewares;
 using cw3.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +39,7 @@ namespace cw3
             }
             app.UseHttpsRedirection();
 
+            app.UseMiddleware<LoggingMiddleware>();
 
             app.Use(async (context, next) =>
             {
