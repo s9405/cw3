@@ -1,4 +1,5 @@
-﻿using cw3.Requests;
+﻿using cw3.Models;
+using cw3.Requests;
 using cw3.Responses;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace cw3.Services
     {
         EnrollStudentResponse EnrollStudent(EnrollStudentRequest student);
         PromoteStudentResponse PromoteStudent(PromoteStudentRequest request);
+        Student GetStudent(String index);
+        public IEnumerable<Student> GetStudents();
 
     }
 }

@@ -1,5 +1,48 @@
 Sciezka: /api/students query string:  metoda: GET cialo: 
-Sciezka: /favicon.ico query string:  metoda: GET cialo: 
+Sciezka: /api/enrollments query string:  metoda: POST cialo: {
+"IndexNumber": "s123545",
+"FirstName": "Baltazar",
+"LastName": "Gabka",
+"BirthDate": "30.03.1989",
+"Studies": "IT"
+}
+Sciezka: /api/students query string:  metoda: GET cialo: 
+Sciezka: /api/students query string:  metoda: GET cialo: 
+Sciezka: /api/enrollments query string:  metoda: POST cialo: {
+"IndexNumber": "s123545",
+"FirstName": "Baltazar",
+"LastName": "Gabka",
+"BirthDate": "30.03.1989",
+"Studies": "IT"
+}
+Sciezka: /api/enrollments query string:  metoda: POST cialo: {
+"IndexNumber": "s123545",
+"FirstName": "Baltazar",
+"LastName": "Gabka",
+"BirthDate": "30.03.1989",
+"Studies": "IT"
+}
+Sciezka: /api/enrollments query string:  metoda: POST cialo: {
+"IndexNumber": "s123545",
+"FirstName": "Baltazar",
+"LastName": "Gabka",
+"BirthDate": "30.03.1989",
+"Studies": "IT"
+}
+Sciezka: /api/enrollments query string:  metoda: POST cialo: {
+"IndexNumber": "s123545",
+"FirstName": "Baltazar",
+"LastName": "Gabka",
+"BirthDate": "30.03.1989",
+"Studies": "IT"
+}
+Sciezka: /api/enrollments query string:  metoda: POST cialo: {
+"IndexNumber": "s123545",
+"FirstName": "Baltazar",
+"LastName": "Gabka",
+"BirthDate": "30.03.1989",
+"Studies": "IT"
+}
 Sciezka: /api/enrollments query string:  metoda: POST cialo: {
 "IndexNumber": "s123545",
 "FirstName": "Baltazar",

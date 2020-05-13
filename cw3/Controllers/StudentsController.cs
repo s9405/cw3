@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using cw3.DAL;
-using cw3.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
-using System.Data.SqlClient;
 using cw3.Services;
+using cw3.Requests;
+using cw3.Responses;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using cw3.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace cw3.Controllers
 {
@@ -17,15 +23,21 @@ namespace cw3.Controllers
     {
         private readonly IStudentDbService _dbService;
 
-        public StudentsController(IStudentDbService dbService)
+        public IConfiguration Configuration;
+
+        public StudentsController(IStudentDbService dbService, IConfiguration configuration)
         {
+            Configuration = configuration;
             _dbService = dbService;
         }
         [HttpGet]
-        public IActionResult GetStudents(string orderBy)
+        [Authorize(Roles = "employee")]
+        public IActionResult GetStudents()
         {
-   
-            return Ok();
+            var list = new List<Student>();
+            list.AddRange
+                (_dbService.GetStudents());
+            return Ok(list);
         }
  
         [HttpGet("{id}")]
@@ -43,16 +55,6 @@ namespace cw3.Controllers
             return NotFound("Nie znaleziono studenta");
         }
 
-        [HttpPost]
-
-        public IActionResult CreateStudent(Student student)
-        {
-            //... add to database
-            //.. generating index number
-            student.IndexNumber = $"s{new Random().Next(1, 20000)}";
-            return Ok(student);
-        }
-
         [HttpPut("{id}")]
         public IActionResult Put()
         {
@@ -63,6 +65,46 @@ namespace cw3.Controllers
         public IActionResult Delete()
         {
             return StatusCode(200, "Usuwanie ukonczone");
+        }
+
+        [HttpPost]
+        public IActionResult Login(LoginRequest request)
+        {
+
+            Student student = _dbService.GetStudent(request.Login);
+
+
+            if (!request.Haslo.Equals(student.Password))
+            {
+                return Unauthorized("Incorrect password !");
+            }
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, student.IndexNumber),
+                new Claim(ClaimTypes.Name, student.FirstName),
+                new Claim(ClaimTypes.Surname, student.LastName),
+                new Claim(ClaimTypes.Role, "employee"),
+                new Claim(ClaimTypes.Role, "admin")
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken
+            (
+                issuer: "Gakko",
+                audience: "Student",
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(10),
+                signingCredentials: creds
+            );
+
+            return Ok(new
+            {
+                accessToken = new JwtSecurityTokenHandler().WriteToken(token),
+                refreshToken = Guid.NewGuid()
+            });
         }
     }
 }

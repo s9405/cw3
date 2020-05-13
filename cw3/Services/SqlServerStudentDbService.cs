@@ -12,6 +12,69 @@ namespace cw3.Services
 {
     public class SqlServerStudentDbService : IStudentDbService
     {
+
+        public IEnumerable<Student> GetStudents()
+        {
+            var tmp = new List<Student>();
+
+          
+            using (var connection = new SqlConnection("Data Source=db-mssql;Initial Catalog=s9405;Integrated Security=True"))
+            using (var command = new SqlCommand())
+
+            {
+                command.Connection = connection;
+                connection.Open();
+                var transaction = connection.BeginTransaction();
+                command.Transaction = transaction;
+                command.CommandText = "select * from Student";
+           
+                
+                var dr = command.ExecuteReader();
+                while (dr.Read())
+                {
+                    var st = new Student();
+                    st.FirstName = dr["FirstName"].ToString();
+                    st.LastName = dr["LastName"].ToString();
+                    st.IndexNumber = dr["IndexNumber"].ToString();
+                    st.BirthDate = (DateTime)dr["BirthDate"];
+                    tmp.Add(st);
+
+
+                }
+            }
+            
+    
+            return tmp;
+        }
+        public Student GetStudent(string Index)
+        {
+            using (var connection = new SqlConnection("Data Source=db-mssql;Initial Catalog=s9405;Integrated Security=true"))
+            using (var command = new SqlCommand())
+            {
+                command.Connection = connection;
+                connection.Open();
+                var transaction = connection.BeginTransaction();
+                command.Transaction = transaction;
+                command.CommandText = "SELECT IndexNumber, FirstName, LastName, Password  FROM student where indexnumber = @index";
+                command.Parameters.AddWithValue("index", Index);
+                var dr = command.ExecuteReader();
+                if (!dr.Read())
+                {
+                    
+                    throw new ArgumentException("Brak studentow o powyzszym id");
+                }
+
+                Student student = new Student();
+
+                student.IndexNumber = dr["IndexNumber"].ToString();
+                student.FirstName = dr["FirstName"].ToString();
+                student.LastName = dr["LastName"].ToString();
+                student.Password = dr["Password"].ToString();
+                dr.Close();
+
+                return student;
+            }
+        }
         [HttpPost]
         public EnrollStudentResponse EnrollStudent(EnrollStudentRequest student)
         {
